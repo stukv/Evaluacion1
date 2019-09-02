@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+      <link rel="stylesheet" type="text/css" href="estilo.css">
+  </head>
+  <body>
+      
+          <nav>
+              <a href="index.html" class="actual">Revista UTE</a> <a href="icvu-2019.html">ICVU 2019</a> <a href="psu-nem.html">PSU/NEM</a> <a href="better-times.html">DESEMPLEO</a> <a href="global-warming.html">CALENTAMIENTO GLOBAL</a>
+          </nav>
+    <canvas id="myChart" width="100" height="35"></canvas>
+
+    <script>
+      // Data from: https://data.giss.nasa.gov/gistemp/
+      // Mean from: https://earthobservatory.nasa.gov/world-of-change/DecadalTemp
+
+   
+
+      window.addEventListener('load', setup);
+
+      async function setup() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const globalTemps = await getData();
+        const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: globalTemps.years,
+            datasets: [
+              {
+                label: 'Temperatura en °C',
+                data: globalTemps.temps,
+                fill: false,
+                borderColor: 'rgba(  17, 122, 101)',
+                backgroundColor: 'rgba(26, 188, 156)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {}
+        });
+      }
+
+      async function getData() {
+        // const response = await fetch('testdata.csv');
+        const response = await fetch('https://raw.githubusercontent.com/basfor/csvs/master/tabla%20temperatura.csv');
+        const data = await response.text();
+        const years = [];
+        const temps = [];
+        const rows = data.split('\n').slice(1);
+        rows.forEach(row => {
+          const cols = row.split(',');
+          years.push(cols[0]);
+          temps.push(14 + parseFloat(cols[1]));
+        });
+        return { years, temps };
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Desafío 03</title>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <meta charset="utf-8">
+    <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    canvas {
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="actual">Revista UTE</a> <a href="icvu-2019.html">ICVU 2019</a> <a href="psu-nem.html">PSU/NEM</a> <a href="better-times.html">DESEMPLEO</a> <a href="global-warming.html">CALENTAMIENTO GLOBAL</a>
+    </nav>
+</body>
+<script>
+var data, i;
+let j;
+
+function preload() {
+    data = loadTable('https://raw.githubusercontent.com/stukv/tablasDesafios/master/psu-nem-2016-editado.csv', 'csv', 'header');
+
+}
+
+function setup() {
+    console.log(data);
+    createCanvas(windowWidth, windowHeight);
+    noLoop();
+    selector = createSelect();
+    selector.position(width -1900, 20);
+    selector.option('Municipal', 0);
+    selector.option('Particular Subvencionado', 1);
+    selector.option('Particular Pagado', 2);
+    selector.changed(elCambio);
+    stroke(1);
+    
+    for (i = 800; i >= 100; i -= 100) {
+        text(i, 400, (height - i) - 50);
+    }
+    for (j = 1.0; j <= 7.0; j += 1.0) {
+        text(j + '.0', 450 + (j * 160), height - 100);
+    }
+    
+}
+
+function draw() {
+
+    var opcion = selector.value();
+    if (opcion == 0) {
+
+
+        for (var k = 0; k < 131; k++) {
+
+            if (data.get(k, 2) == 'Municipal') {
+                //  console.log(data.get(k,4));
+                if (data.get(k, 3) > 500 && data.get(k, 4) > 5.0) {
+                    console.log(data.get(k, 4));
+                    console.log(data.get(k, 3));
+                    noStroke();
+                    fill('rgb(  22, 160, 133)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+                    noFill();
+
+                } else if (data.get(k, 3) < 450) {
+                    fill('rgb( 165, 105, 189)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+                } else {
+                    fill('rgb(243, 156, 18)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+
+                }
+
+            }
+        }
+
+
+
+    
+
+    }
+
+    else if (opcion == 1) {
+
+        for (var k = 0; k < 131; k++) {
+
+            if (data.get(k, 2) == 'Particular Subvencionado') {
+                //  console.log(data.get(k,4));
+                if (data.get(k, 3) > 500 && data.get(k, 4) > 5.0) {
+                    console.log(data.get(k, 4));
+                    console.log(data.get(k, 3));
+                    noStroke();
+                    fill('rgb(  22, 160, 133)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+
+                } else if (data.get(k, 3) < 450) {
+                    fill('rgb( 165, 105, 189)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+                } else {
+                    fill('rgb(243, 156, 18)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+
+                }
+
+            }
+        }
+    }
+
+    else{
+        for (var k = 0; k < 131; k++) {
+
+            if (data.get(k, 2) == 'Particular Pagado') {
+                //  console.log(data.get(k,4));
+                if (data.get(k, 3) > 500 && data.get(k, 4) > 5.0) {
+                    console.log(data.get(k, 4));
+                    console.log(data.get(k, 3));
+                    noStroke();
+                    fill('rgb(  22, 160, 133)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+
+                } else if (data.get(k, 3) < 450) {
+                    fill('rgb( 165, 105, 189)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+                } else {
+                    fill('rgb(243, 156, 18)');
+                    ellipse(data.get(k, 4) * 160 + 450, height - (data.get(k, 3)) - 50, 10, 10);
+
+                }
+
+            }
+        }
+
+    }
+
+}
+
+function elCambio() {
+    clear();
+    redraw();
+    stroke(0);
+    noFill();
+    for (var i = 800; i >= 100; i -= 100) {
+        text(i, 400, (height - i) - 50);
+    }
+    for (j = 1.0; j <= 7.0; j += 1.0) {
+        text(j + '.0', 450 + (j * 160), height - 100);
+    }
+
+}
+</script>
+
+</html>

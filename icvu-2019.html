@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ICVU</title>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+
+<body>
+    
+    <nav>
+        <a href="index.html">Revista UTE</a> <a href="icvu-2019.html"class="actual">ICVU 2019</a> <a href="psu-nem.html">PSU/NEM</a> <a href="better-times.html">DESEMPLEO</a> <a href="global-warming.html">CALENTAMIENTO GLOBAL</a>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+
+    <script>
+        var selector, data, opcion;
+        var factor = 5;
+        function preload() {
+            data = loadTable("https://raw.githubusercontent.com/stukv/tablasDesafios/master/tabla-icvu.csv", "csv", "header");
+        } 
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            noStroke();
+            noLoop();
+            selector = createSelect();
+            selector.position(width -1900, 20);
+            selector.option('Maximos');
+            selector.option('Minimos');
+            selector.option('Rango superior');
+            selector.option('Rango promedio');
+            selector.option('Rango inferior');
+            selector.changed(viz);
+            noLoop();
+        }
+
+        function dimensiones() {
+            clear();
+            textSize(9);
+            textAlign(CENTER);
+            rectMode(CENTER);
+            stroke(0);
+            
+            for (var n = 0; n < 7; n++) {
+                text(data.get(n, 0), (width / 17) * (n + 1), height - 20, width / 17, 50);
+            }
+        }
+
+        function draw() {
+            noFill();
+            dimensiones();
+            
+            beginShape();
+            vertex((width / 17), height - 60);
+            for (var x = 0; x < 7; x++) {
+                stroke(0);
+                vertex((width / 17) * (x + 1), (height - 60) - (data.get(x, 1) * factor));
+
+            }
+            
+            vertex((width / 17) * 7, height - 60);
+            endShape(CLOSE);
+
+            for (var y = 0; y < 7; y++) {
+                stroke(22, 160, 133);
+                
+                line((width / 17) * (y + 1), (height - 60), (width / 17) * (y + 1), (height - 60) - (data.get(y, 1) * factor),)
+
+            }
+
+        }
+
+        function viz(){
+            clear();
+            dimensiones();
+            redraw();
+            opcion = selector.value();
+            if (opcion == "Maximos"){
+            } else {
+                if (opcion == "Minimos") {
+                    columna = 2;
+                } else if (opcion == "Rango superior") {
+                    columna = 3;
+                } else if (opcion == "Rango promedio") {
+                    columna = 4;
+                } else {
+                    columna = 5;
+            } 
+            fill(163, 228, 215);
+            beginShape();
+            vertex((width / 17), height - 60);
+            for (var a = 0; a < 7; a++) {
+                vertex((width / 17) * (a + 1), (height - 60) - (data.get(a, columna) * factor));
+            }
+            vertex((width / 17) * 7, height - 60);
+            endShape(CLOSE);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
